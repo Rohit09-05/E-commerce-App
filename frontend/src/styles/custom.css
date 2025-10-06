@@ -1,0 +1,26 @@
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3b82f6; /* Tailwind blue-500 */
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+/* Custom global links style */
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2563eb; /* Tailwind blue-600 */
+}
+
+/* Add any other global overrides or custom classes here */
