@@ -11,16 +11,26 @@ function Home({ searchQuery }) {
     async function fetchProducts() {
       try {
         const res = await axios.get("/api/products");
-        setProducts(res.data);
-      } catch {}
+        if (Array.isArray(res.data)) {
+          setProducts(res.data);
+        } else {
+          console.log("API /products returned:", res.data);
+          setProducts([]);
+        }
+      } catch (err) {
+        console.log("API /products error:", err);
+        setProducts([]);
+      }
       setLoading(false);
     }
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts = Array.isArray(products)
+    ? products.filter(product =>
+        (product.name || "").toLowerCase().includes((searchQuery || "").toLowerCase())
+      )
+    : [];
 
   if (loading) {
     return <div className="text-center py-8 text-xl">Loading products...</div>;
