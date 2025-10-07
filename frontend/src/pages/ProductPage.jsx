@@ -7,19 +7,22 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ALWAYS use the env variable base URL!
+  const BASE_URL = process.env.REACT_APP_API_URL || "";
+
   useEffect(() => {
     async function fetchProduct() {
       try {
-        // Replace `/api/products/${id}` with your backend endpoint
-        const res = await axios.get(`/api/products/${id}`);
-        setProduct(res.data);
+        const res = await axios.get(`${BASE_URL}/api/products/${id}`);
+        setProduct(res.data && typeof res.data === "object" ? res.data : null);
       } catch (error) {
+        setProduct(null);
         console.error("Error fetching product:", error);
       }
       setLoading(false);
     }
     fetchProduct();
-  }, [id]);
+  }, [id, BASE_URL]);
 
   if (loading) {
     return <div className="text-center py-8 text-xl">Loading product...</div>;
