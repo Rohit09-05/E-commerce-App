@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import BannerCarousel from "../components/BannerCarousel";
-import axios from "axios";
+import { fetchProducts } from "../api/products"; // <-- import your API utility
 
 function Home({ searchQuery }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await axios.get("/api/products");
-        if (Array.isArray(res.data)) {
-          setProducts(res.data);
-        } else {
-          console.log("API /products returned:", res.data);
-          setProducts([]);
-        }
-      } catch (err) {
-        console.log("API /products error:", err);
+    async function loadProducts() {
+      const productsArray = await fetchProducts();
+      if (Array.isArray(productsArray)) {
+        setProducts(productsArray);
+      } else {
+        // Log for debugging -- product API did not return an array!
+        console.log("API /products did not return an array:", productsArray);
         setProducts([]);
       }
       setLoading(false);
     }
-    fetchProducts();
+    loadProducts();
   }, []);
 
   const filteredProducts = Array.isArray(products)
